@@ -6,8 +6,12 @@ public class Player {
     String _name;
     ArrayList<Card> _cards = new ArrayList<Card>();
     
-    public void play(Player nextPlayer, Random rand) {
-        Card picked = nextPlayer.pickOne(rand);
+    public void play(Player nextPlayer) {
+        Card picked = nextPlayer.pickOne();
+        this.play(nextPlayer, picked);
+    }
+    
+    public void play(Player nextPlayer, Card picked) {
         if(this.isHoldingNumber(picked.getNumber())) {
             this.removeWithNumber(picked.getNumber());
         } else {
@@ -43,8 +47,11 @@ public class Player {
         return false;
     }
     
-    public Card pickOne(Random rand) {
-        int i = rand.nextInt(_cards.size());
+    public Card pickOne() {
+        return pickOne(OldMaid.RAND.nextInt(_cards.size()));
+    }
+    
+    public Card pickOne(int i) {
         Card picked = _cards.get(i);
         _cards.remove(i);
         return picked;

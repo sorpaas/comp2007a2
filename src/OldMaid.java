@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class OldMaid {
     public static boolean DEBUG = false;
+    public static Random RAND = null;
     
     public static void main(String[] args) { 
         int seed = inWithRange("Please enter the seed (0-1000): ", "Invalid seed!", 0, 1000);
@@ -12,6 +13,16 @@ public class OldMaid {
         DEBUG = debug;
         
         OldMaid game = new OldMaid(noPlayers, seed);
+        Player[] players = game.getPlayers();
+        if(players.length >= 3) {
+            players[2] = new UserPlayer("User");
+        }
+        if(players.length >= 4) {
+            players[3] = new CunningPlayer("Cunning");
+        }
+        if(players.length >= 5) {
+            players[4] = new DumbPlayer("Dumb");
+        }
         
         game.distribute();
         if(DEBUG) {
@@ -35,7 +46,7 @@ public class OldMaid {
         System.out.println(game.loser() + " is the loser!!");
     }
     
-    private static int inWithRange(String friendlyLine, String errorLine, int lower, int higher) {
+    public static int inWithRange(String friendlyLine, String errorLine, int lower, int higher) {
         Scanner in = new Scanner(System.in);
         
         int seed = -1;
@@ -70,6 +81,8 @@ public class OldMaid {
         
         _rand = new Random(seed);   
         _deck = new DeckOfCards();
+        
+        RAND = _rand;
     }
     
     public void distribute() {
